@@ -1,0 +1,128 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+   <!-- Heading -->
+   <section class="page-section">
+    <div class="container clearfix text-center">
+      <div class="intro">
+        <img class="intro-img img-fluid rounded" src="{% static 'Aplicacion1/img/fiesta.jpg' %}" alt="">
+        <div class="intro-text bg-faded">
+          <div class="row">
+            <div class="col-2">
+              <img src="{% static 'Aplicacion1/img/IcoChampagne2.png' %}" alt="">
+            </div>
+            <div class="col-8">
+                <h2 class="section-heading mb-4" >
+                  <span class="section-heading-lower">Quinta para Eventos</span>
+                </h2>
+            </div>
+            <div class="col-2">
+                <img src="{% static 'Aplicacion1/img/IcoCerveza.png' %}" alt="">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col colspan=3 section-heading">
+                  <p class="section-heading-upper mb-3">Especial para Festejar: Cumple de 30 o más, Aniversarios, Despedidas y Reuniones de Amigos/Amigas.
+                  </p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+                <img src="{% static 'Aplicacion1/img/Comer.png' %}" alt="">
+            </div>
+            <div class="col-6">
+                  <h2 class="section-heading mb-4" >
+                    <span class="section-heading-upper">Cap. Max 40 personas</span>
+                  </h2>
+            </div>
+            <div class="col-3">
+                  <img src="{% static 'Aplicacion1/img/Baile.png' %}" alt="">
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+   
+  </section>
+
+  <div class="container-flow site-heading text-center mx-auto">
+    <div class="row">
+      <div class="col-4">
+             
+            <div class="row">
+              <div class="col site-heading-Texto">               
+                <span>Consultas</span>
+              </div>
+            </div>
+        
+            <div class="row">
+              <div class="col site-heading-TextoChico">               
+               <span>Tel: +54 9 1130972936</span>
+              </div>
+            </div>
+            <p></p>
+            <div class="row">
+            <div class="col site-heading-TextoChico">
+              <a href="https://wa.me/5491130972936?text=Hola,%20%20solicito%20informaci%C3%B3n%20sobre..."  title="link de WatsApp">
+                <img alt="WatsApp" src="{% static 'Aplicacion1/img/whatsap.png' %}" width="120" height="75"/>
+              </a>
+              <p>
+              <span>Watsapp</span>
+              </p>
+            </div>
+            </div>
+           
+            <div class="row">
+              <div class="col site-heading-Texto">
+                <span>Mini Eventos</span>
+               </div>
+            </div>
+            
+          
+
+
+      
+      
+      </div>
+      <div class="col-8">
+        
+        <div class="container">
+          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" mx-6>
+          <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="carousel-item active text-center">
+              <img class="img-fluid" src="{% static 'Aplicacion1/img/Fiesta.jpg' %}" width="500" height="auto" alt="First slide">
+            </div>
+            <div class="carousel-item text-center">
+              <img class="img-fluid" src="{% static 'Aplicacion1/img/Fiesta.jpg' %}"  width="500" height="auto" alt="Second slide">
+            </div>
+            <div class="carousel-item text-center">
+              <img class="img-fluid" src="{% static 'Aplicacion1/img/Fiesta.jpg' %}"  width="500" height="auto" alt="Third slide">
+            </div>
+          </div>
+        
+          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Anterior</span>
+          </a>
+          <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Siguiente</span>
+          </a>
+          </div>
+        </div>
+      
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
+
