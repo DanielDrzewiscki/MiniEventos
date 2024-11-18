@@ -1,0 +1,82 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container-flow site-heading text-center">
+  <div class="row">
+     <div class="col-2">
+     </div>
+     <div class="col-10 site-heading-TextoMedio" style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+     <span><u>Servicios</u></span>
+     </div>
+  </div>
+ 
+</div>
+
+<div class="container-flow">
+  <div class="row">
+     <div class="col-2">
+        <div class="container">
+           <nav class="navbar  navbar-expand flex-column">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-orientation="vertical" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarText">
+                
+                 <ul class="nav">
+                    <span style="color: #e2da92">
+                       <b><u>Servicios:</b></u>
+                    </span>
+                                       
+                    {% for Sect in Servicios %}
+                    
+                    <li class="nav-item">
+                       <a href="{% url 'item' Sect.id %}" class="linksCategorias" >{{ Sect.titulo }}</a>
+                    </li>
+                    
+                    {% endfor %}
+                    
+                 </ul>
+              </div>
+           </nav>
+        </div>
+     </div>
+     <div class="col-10" style="border-left: solid; border-color: rgb(48, 27, 11);">
+
+      <section class="page-section clearfix">
+        <div class="container height: 92px" >
+          <div class="intro">
+            <img class="intro-img img-fluid" src="{% static 'Aplicacion1/img/imagenfiesta.jpg' %}" alt="" style="width: 100%">
+            <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+              <h2 class="section-heading mb-4" >
+                <span class="section-heading-lower">Un Servicio para cada Necesidad</span>
+              </h2>
+               <p></p>
+               <div class="TextoLobster">
+               <span>Tenemos la infrastructura y predisposición para ofrecer el servicio que usted necesita</span>
+               <p></p>
+               <span>Adaptandonos a su presupuesto. Podemos ofrecerle desde una atención premium completa, hasta la locacion de las instalaciones.</span>
+               <p></p>  
+               <span><b>"Seleccione desde el menú para conocer las opciones"</b></span>
+             </div>
+              
+             
+            </div>
+          </div>
+        </div>
+      </section>
+
+     </div>
+
+
+
+
+  </div>
+</div>
+
+  
+
+{% endblock %}

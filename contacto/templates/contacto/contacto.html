@@ -1,0 +1,66 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<div class="container-flow site-heading text-center">
+<div class="row">
+  <div class="col-md-12 col-lg-6 mx-auto">
+  <div class="row">
+    <div class="col site-heading-lower">
+      <span>Contactese con Nosotros</span>
+     </div>
+  </div>
+  <div class="row">
+    <div class="col site-heading-Texto">               
+      <span>Puede realizar su consulta mediante el formulario.</span>
+      <span> Responderemos a su casilla de mail</span>
+    </div>
+  </div>            
+  <div class="row">
+    <div class="col site-heading-Texto">               
+     <span>O por Watsapp al +54 9 1130972936</span>
+    </div>
+  </div>
+  <div class="row">
+  <div class="col">
+    <a href="https://wa.me/5491130972936?text=Hola,%20%20solicito%20informaci%C3%B3n%20sobre..."  title="link de WatsApp">
+      <img alt="WatsApp" src="{% static 'Aplicacion1/img/whatsap.png' %}" width="120" height="75"/>
+    </a>
+  </div>
+ 
+</div>
+  <div class="row">
+    <div class="col site-heading-Marca">
+      <span>Mini Eventos</span>
+     </div>
+  </div>
+  </div>
+    
+    <div class="col-md-12 col-lg-6 mx-auto">
+      <form action="" method="POST">
+        <div class="contenedorformulario">
+    {% csrf_token %}
+    {% if "Valido" in request.GET %}
+        <table style="color: white; margin: auto;">
+          <tr><td>Se ha enviado correctamente la información al Servidor</td></tr>
+        </table>
+    {% endif %}
+    {% if "NoValido" in request.GET %}
+        <table style="color: white; margin: auto;">
+          <tr><td>Ocurrio un ERROR "NO SE PUDO ENVIAR LA INFORMACIÓN"</td></tr>
+        </table>
+    {% endif %}
+        <table style="color: white; margin: 20px auto; font-family: 'Lora';">{{Form.as_table}}</table>
+        <table style="color: white; margin: auto;">
+          <tr><td><input type="submit" value="Enviar" style="width: 150px;"></td></tr>
+        </table>
+        </div>
+      </form>
+    </div>
+  
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block content %}
+
+<section class="site-heading">
+    <div class="container-flow clearfix text-center">
+        <div class="row intro">
+            <div class="col intro-img2">
+                <img style="transform: rotate(-30deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/whatsap.png' %}" width="150" height="150"/>    
+            </div>
+            <div class="col intro-text2">
+                <span class="site-heading-Marca">Diana y Daniel</span>
+                <p></p>
+                <span class="site-heading-TextoMedio">Organizadores de Eventos</span>
+                
+            </div>
+            <div class="col intro-img">
+                <img style="transform: rotate(30deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/whatsap.png' %}" width="150" height="150"/>    
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center">
+        <div class="row">
+            <div class="col site-heading-TextoMedio">
+                <span>Somos un matrimonio que adapto una casa quinta para realizar eventos de hasta 40 personas</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col site-heading-TextoChico">
+                <span>Contamos con un salon climatizado y lujosamente equipado para disfrutar de la mejor comodidad</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col site-heading-TextoChico">
+                <span>Pista de baile, Luces, Karaoke, Jardin para recepción y distención, Barra de tragos y Cerveza artesanal.</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col site-heading-TextoChico">
+                <span>Quincho con parrilla, Horno pizzero y Disco de arado.</span><span class="site-heading-TextoMedio"> Piscina iluminada.</span>
+            </div>
+        </div>
+        <p></p>
+        <div class="row">
+            <div class="col site-heading-Marca">
+                <span>Nos Adaptamos a tu Necesidad y Presupuesto.</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="site-heading-TextoChico">Brindamos desde un servicio completo, hasta el alquiler de las instalaciones para tu fiesta o reunión.</span>
+                <p></p>
+                <span class="site-heading-TextoMedio">Consultenos y Proponga su Necesidad.</span>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+
+
+{% endblock %}

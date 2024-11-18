@@ -1,0 +1,101 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block content %}
+
+
+<div class="container-flow site-heading text-center">
+    <div class="row">
+       <div class="col-2">
+       </div>
+       <div class="col-10 site-heading-TextoMedio" style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+       <span><u>Galeria de Fotos</u></span>
+       </div>
+    </div>
+   
+  </div>
+  
+  <div class="container-flow">
+    <div class="row">
+       <div class="col-2">
+          <div class="container">
+             <nav class="navbar  navbar-expand flex-column">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-orientation="vertical" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarText">
+                    
+                   <ul class="nav">
+                    
+                    <span style="color: #e2da92">
+                        <b><u>Sectores:</b></u>
+                     </span>
+                         <p></p>             
+                      {% for Sect in Sector %}
+                      
+                      <li class="nav-item">
+                         <a href="{% url 'sector' Sect.id %}" class="linksCategorias" >{{ Sect.nombre }}</a>
+                      </li>
+                      
+                      {% endfor %}
+                      
+                   </ul>
+                </div>
+             </nav>
+          </div>
+       </div>
+       <div class="col-10" style="border-left: solid; border-color: rgb(48, 27, 11);">
+  
+        <div class="container-flow mt-2 mb-2 fondoimagen">
+            <div class="row">
+            <div id="adiv-1" class="col adiv-1" style="height: 250px; width: 350px;">
+                <img class="img-fluid"style="transform: rotate(-10deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/carpa2.jpg' %}"/>    
+            </div>
+            <div id="adiv-2" class="col adiv-2" style="height: 250px; width: 350px;">
+                <img class="img-fluid"style="transform: rotate(10deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/pino2.jpg' %}"/>      
+            </div>
+            <div id="adiv-3" class="col adiv-3" style="height: 250px; width: 350px;">
+                <img class="img-fluid"style="transform: rotate(0deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/quincho1.jpg' %}"/>        
+            </div>
+            <div id="adiv-4" class="col adiv-4" style="height: 250px; width: 350px;">
+                <img class="img-fluid"style="transform: rotate(-10deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/barra2.jpg' %}"/>         
+            </div>
+            <div id="adiv-5" class="col adiv-5" style="height: 250px; width: 350px;">
+                <img class="img-fluid"style="transform: rotate(10deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/pileta2.jpg' %}"/>       
+            </div>
+            <div id="adiv-6" class="col adiv-6" style="height: 250px; width: 350px;">
+                <img class="img-fluid"style="transform: rotate(-5deg);" alt="WatsApp" src="{% static 'Aplicacion1/img/quincho3.jpg' %}"/>       
+            </div>  
+        </div>
+    
+    </div>
+  
+       </div>
+  
+  
+  
+  
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

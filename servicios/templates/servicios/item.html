@@ -1,0 +1,80 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="container-flow site-heading text-center">
+  <div class="row">
+     <div class="col-2">
+     </div>
+     <div class="col-10 site-heading-TextoMedio" style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+     <span><u>{{ Servicios.titulo }}</u></span>
+     </div>
+  </div>
+ 
+</div>
+
+<div class="container-flow">
+  <div class="row">
+     <div class="col-2">
+        <div class="container">
+           <nav class="navbar  navbar-expand flex-column">
+              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-orientation="vertical" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarText">
+                
+                 <ul class="nav">
+                    <span style="color: #e2da92; text-align: center;">
+                       <b><u>Servicios:</b></u>
+                    </span>
+                                       
+                    {% for Sect in ServTodos %}
+                    
+                    <li class="nav-item" style="text-align: center;">
+                       <a href="{% url 'item' Sect.id %}" class="linksCategorias" >{{ Sect.titulo }}</a>
+                    </li>
+                    
+                    {% endfor %}
+                    
+                 </ul>
+              </div>
+           </nav>
+        </div>
+     </div>
+     <div class="col-10" style="border-left: solid; border-color: rgb(48, 27, 11);">
+
+      {% for Pos in Post %}
+<section class="page-section clearfix">
+  <div class="container height: 92px" >
+    <div class="intro">
+      <img class="intro-img img-fluid" src="{{ Pos.imagenitem.url }}" alt="" style="width: 100%;">
+      <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+        <h2 class="section-heading mb-4" >
+          <span class="section-heading-lower">{{ Pos.nombreitem }}</span>
+        </h2>
+        <p></p>
+        <div class="TextoLobster">
+          <span>{{ Pos.contenidoitem }}</span>
+        </div>
+        
+       
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endfor %}
+
+     </div>
+
+
+
+
+  </div>
+</div>
+
+  
+{% endblock %}
