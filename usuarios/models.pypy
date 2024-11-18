@@ -1,0 +1,110 @@
+from django.db import models
+from django.contrib.auth.models import User #Importa los usuarios
+from servicios.models import Servicio
+from django.db.models import F
+from administracion.models import Usuarioregistrado
+
+# Create your models here.
+
+class Cliente(models.Model):
+    id=models.IntegerField(Usuarioregistrado,primary_key=True)
+    user= models.ForeignKey(User, on_delete=models.CASCADE)
+    nombrecliente=models.CharField(max_length=50, null=True)
+    numcliente= models.IntegerField()
+    edad= models.IntegerField()
+    fecha_nacimiento=models.DateField(null=True)
+    sexo=models.CharField(max_length=15)
+    foto=models.ImageField(upload_to='usuarios', null=True, blank=True)
+    ciudad=models.CharField(max_length=50)
+    provincia=models.CharField(max_length=50)
+    direccion=models.CharField(max_length=50)
+    tipodocunento=models.CharField(max_length=5)
+    numdocumento=models.BigIntegerField()
+    userreg= models.ForeignKey(Usuarioregistrado, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name="Cliente"
+        verbose_name_plural="Clientes"
+        #unique_together = ["userreg"]
+
+    def __str__(self):
+        return self.nombrecliente
+
+class Contrato(models.Model):
+    ident_comtrato=models.CharField(max_length=50) 
+    cliente= models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    fechaevento=models.DateTimeField(null=True)
+    tipoevento=models.ManyToManyField(Servicio)
+    estadoevento=models.CharField(max_length=15, default="pendiente")
+    estadopago=models.CharField(max_length=15, default="pendiente")
+    fotocontrato=models.ImageField(upload_to='usuarios', null=True, blank=True)
+    montooriginal=models.FloatField(null=True)
+    montoactualizado=models.FloatField(null=True)
+    saldopendiente=models.FloatField(null=True)
+
+    class Meta:
+        ordering = ["cliente_id","id"]
+        verbose_name="Contrato"
+        verbose_name_plural="Contratos"
+
+    def __str__(self):
+        return f'{self.cliente} -- {self.ident_comtrato}'
+    
+class Pagos(models.Model):
+    ident_pago=models.CharField(max_length=50)
+    cliente= models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    contrato=models.ForeignKey(Contrato, on_delete=models.CASCADE)
+    fechapago=models.DateTimeField(null=True)
+    monto=models.FloatField()
+    formadepago=models.CharField(max_length=50)
+    numcomprobante=models.IntegerField()
+    imagencomprobante=models.ImageField(upload_to='usuarios', null=True, blank=True)
+
+    class Meta:
+        ordering = ["cliente_id","contrato_id","id"]
+        verbose_name="Pagos"
+        verbose_name_plural="Pagos"
+
+    def __str__(self):
+        return f'{self.contrato.cliente} -- {self.contrato.fechaevento} -- {self.ident_pago}'
+
+class SumaContrato(models.Model):
+    contrato=models.ForeignKey(Contrato, on_delete=models.CASCADE)
+    cliente= models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    monto=models.FloatField()
+
+    class Meta:
+        verbose_name="SumaContrato"
+        verbose_name_plural="SumaContratos"
+
+    def __str__(self):
+        return f'{self.contrato}'
+
+class ActualizacionContrato(models.Model):
+    contrato=models.ForeignKey(Contrato, on_delete=models.CASCADE)
+    saldopendiente=models.FloatField()
+    fechaactualizacion=models.DateTimeField(null=True)
+    porcentaje=models.FloatField()
+    incremento=models.FloatField()
+    aplicado=models.BooleanField(default=False)
+    cliente= models.ForeignKey(Cliente, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["cliente_id","contrato_id","id"]
+        verbose_name="ActualizacionContrato"
+        verbose_name_plural="ActualizacionContratos"
+
+    def __str__(self):
+        return f'{self.contrato}'
+
+class SumaActualizacion(models.Model):
+    contrato=models.ForeignKey(Contrato, on_delete=models.CASCADE)
+    cliente= models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    monto=models.FloatField()
+
+    class Meta:
+        verbose_name="SumaActualizacion"
+        verbose_name_plural="SumaActualizacions"
+
+    def __str__(self):
+        return f'{self.contrato}'

@@ -1,0 +1,279 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<!-- Datos del Cliente -->
+
+<div class="container Tarjeta-encabezado text-center">
+ 
+    <div class="card mb-3">
+      <div class="row Tarjeta-encabezado-titulochico text-center d-none d-block d-lg-none">
+        <div class="col-12">Datos del Cliente</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-12">
+          <img src= "{{ Cliente.foto.url }}" class="img-fluid rounded-start" alt="..."> 
+        </div>
+        <div class="col-lg-8 col-md-12">
+    
+          <div class="row Tarjeta-encabezado-autor text-center">
+            <div class="col-lg-4">
+              <p class="card-text"><b><u>Nombre: </b></u>{{ Cliente.nombrecliente }}</p>
+            </div>
+            <div class="col-lg-8">
+             <p class="card-text"><b><u>Num. Cliente: </b></u> {{ Cliente.numcliente }}</p>
+            </div>
+          </div>  
+    
+          <div class="card-body Tarjeta-encabezado">
+            <div class="card-title Tarjeta-encabezado-titulo text-center d-none d-lg-block">Datos del Cliente</div>
+              <p class="card-text">
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Num Documento:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.tipodocunento }}: &nbsp; &nbsp; {{ Cliente.numdocumento }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Edad:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.edad }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Sexo:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.sexo }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Dirección:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.direccion }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align: right;">
+                    <span>Ciudad:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.ciudad }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align: right;">
+                    <span>Provincia:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.provincia }}</span>
+                  </div>
+                </div>
+        
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+</div>
+
+<!-- Contrato -->
+ 
+  <div class="container contratoformato">
+      <div class="row">
+        <div class="col colspan-7" style="font-family: 'Lobster', sans-serif; font-weight: 500; font-size: larger;">
+            <span>Contratos del cliente</span>
+        </div>
+      </div>
+      <div class="row contratoformato-titulos">
+        <div class="col-sm">
+          <span>Num de Contrato</span>
+        </div>
+        <div class="col-sm">
+          <span>Fecha del Evento</span>
+        </div>
+        <div class="col-sm">
+          <span>Identificación</span>
+        </div>
+        <div class="col-sm">
+          <span>Estado del Evento</span>
+        </div>
+        <div class="col-sm">
+          <span>Monto Original</span>
+        </div>
+        <div class="col-sm">
+            <span>Monto Actualiz.</span>
+        </div>
+        <div class="col-sm">
+          <span>Saldo Pend.</span>
+        </div>
+      </div>
+    {% for Cat in Contrato %}
+      <div class="row contratoformato-filas">
+        <div class="col-sm">
+          <span>{{ Cat.id }}</span>
+        </div>
+        <div class="col-sm">
+          <span>{{ Cat.fechaevento }}</span>
+        </div>
+        <div class="col-sm">
+          <span>{{ Cat.ident_comtrato }}</span>
+        </div>
+        <div class="col-sm">
+          <span>{{ Cat.estadoevento }}</span>
+        </div>
+        <div class="col-sm">
+          <span>{{ Cat.montooriginal }}</span>
+        </div>
+        <div class="col-sm">
+          <span>{{ Cat.montoactualizado }}</span>
+        </div>
+        <div class="col-sm">
+          <span>{{ Cat.saldopendiente }}</span>
+        </div>
+      </div>
+    {% endfor %}  
+
+  </div>
+ 
+ 
+ <!-- Pagos -->
+ 
+  <div class="container contratoformato">
+    <div class="row">
+       <div class="col colspan-6" style="font-family: 'Lobster', sans-serif; font-weight: 500; font-size: larger;">
+           <span><b>Pagos Realizados Por Contratos</b></span>
+       </div>
+    </div>
+   {% for Cat in Contrato %}
+    <div class="row contratoformato-titulos">
+      <div class="col colspan-6">
+        <span>Numero de Contrato:</span><span>{{ Cat.id }}</span>
+      </div>
+    </div>
+    <div class="row contratoformato-titulos">
+        <div class="col-sm">
+         <span>Fecha del Pago</span>
+        </div>
+        <div class="col-sm">
+         <span>Identificación</span>
+        </div>
+        <div class="col-sm">
+         <span>Num de Comprobante</span>
+        </div>
+        <div class="col-sm">
+         <span>Forma de Pago</span>
+        </div>
+        <div class="col-sm">
+         <span>Monto Abonado</span>
+        </div>
+        <div class="col-sm">
+           <span>Ver Recibo</span>
+        </div>
+    </div>
+
+    {% for Pag in Pago %}
+    {% if Pag.contrato_id == Cat.id %}  
+    
+    <div class="row contratoformato-filas">
+     
+      <div class="col-sm">
+       <span>{{ Pag.fechapago }}</span>
+      </div>
+      <div class="col-sm">
+       <span>{{ Pag.ident_pago }}</span>
+      </div>
+      <div class="col-sm">
+       <span>{{ Pag.numcomprobante }}</span>
+      </div>
+      <div class="col-sm">
+       <span>{{ Pag.formadepago }}</span>
+      </div>
+      <div class="col-sm">
+       <span>{{ Pag.monto }}</span>
+      </div>
+      <div class="col-sm">
+       <span>Boton</span>
+      </div>
+    </div>
+   
+   
+   {% endif %}
+   {% endfor %} 
+   
+   {% for tot in Total %}
+   {% if tot.contrato_id == Cat.id %} 
+    <div class="row contratoformato-titulos">
+      <div class="col colspan-3">
+        <span>Total Abonado:</span><span>&nbsp; &nbsp; &nbsp;$&nbsp;{{ tot.monto }}</span>
+      </div>
+      <div class="col colspan-3">
+        <span>Estado Actual:</span><span>&nbsp; &nbsp; &nbsp;{{ Cat.estadopago }}</span>
+      /div>
+    </div>
+  {% endif %}
+  {% endfor %}
+    <div class="row" style="background-color:rgb(185, 185, 94)">
+      <div class="col colspan-6">
+      </div>
+    </div>
+   
+   {% endfor %}  
+
+  </div>
+
+<!-- Actualizacion por Inflacion -->
+
+<div class="container contratoformato">
+  <div class="row">
+       <div class="col colspan-6" style="font-family: 'Lobster', sans-serif; font-weight: 500; font-size: larger;">
+           <span><b>Actualización de Deuda sobre Saldo Deudor</b></span>
+       </div>
+   </div>
+   {% for Cat in Actualizacion %}
+  <div class="row contratoformato-titulos">
+    <div class="col colspan-5">
+        <span>Numero de Contrato:</span><span>{{ Cat.id }}</span>
+    </div>
+  </div>
+   <div class="row contratoformato-titulos">
+       <div class="col-sm">
+         <span>Saldo Pendiente</span>
+       </div>
+       <div class="col-sm">
+         <span>Fecha de Actualizacion</span>
+       </div>
+       <div class="col-sm">
+         <span>Num de Comprobante</span>
+       </div>
+       <div class="col-sm">
+         <span>Porcentaje</span>
+       </div>
+       <div class="col-sm">
+         <span>Incremento</span>
+       </div>
+    </div>
+
+    {% endfor %}
+
+
+</div>
+ 
+ 
+ 
+
+
+{% endblock %}

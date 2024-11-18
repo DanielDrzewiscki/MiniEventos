@@ -1,0 +1,412 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% csrf_token %}
+
+
+<!-- Datos del Cliente -->
+
+<div class="container Tarjeta-encabezado text-center">
+ 
+    <div class="card mb-3">
+      <div class="row Tarjeta-encabezado-titulochico text-center d-none d-block d-lg-none">
+        <div class="col-12">Datos del Cliente</div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4 col-md-12">
+          {% if Cliente.foto %}
+          <img src= "{{ Cliente.foto.url }}" class="img-fluid rounded-start" alt="..."> 
+          {% endif %}
+        </div>
+        <div class="col-lg-8 col-md-12">
+    
+          <div class="row Tarjeta-encabezado-autor text-center">
+            <div class="col-lg-4">
+              <p class="card-text"><b><u>Nombre: </b></u>{{ Cliente.nombrecliente }}</p>
+            </div>
+            <div class="col-lg-8">
+             <p class="card-text"><b><u>Num. Cliente: </b></u> {{ Cliente.numcliente }}</p>
+            </div>
+          </div>  
+    
+          <div class="card-body Tarjeta-encabezado">
+            <div class="card-title Tarjeta-encabezado-titulo text-center d-none d-lg-block">Datos del Cliente</div>
+              <p class="card-text">
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Num Documento:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.tipodocunento }}: &nbsp; &nbsp; {{ Cliente.numdocumento }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Edad:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Años }} Años</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Sexo:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.sexo }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align:right;">
+                    <span>Dirección:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.direccion }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align: right;">
+                    <span>Ciudad:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.ciudad }}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col" style="text-align: right;">
+                    <span>Provincia:</span>
+                  </div>
+                  <div class="col" style="text-align: left;">
+                    <span>{{ Cliente.provincia }}</span>
+                  </div>
+                </div>
+        
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+    </div>
+</div>
+
+<!-- Contrato -->
+ 
+<div class="container contratoformato">
+  <div class="row">
+    <div class="col colspan-7" style="font-family: 'Lobster', sans-serif; font-weight: 500; font-size: larger;">
+        <span>Contratos del cliente</span>
+    </div>
+  </div>
+  <div class="row contratoformato-titulos">
+    <div class="col">
+      <span>Num de Contrato</span>
+    </div>
+    <div class="col">
+      <span>Fecha del Evento</span>
+    </div>
+    <div class="col">
+      <span>Identificación</span>
+    </div>
+    <div class="col">
+      <span>Estado del Evento</span>
+    </div>
+    <div class="col">
+      <span>Monto Original</span>
+    </div>
+    <div class="col-sm">
+        <span>Monto Actualiz.</span>
+    </div>
+    <div class="col">
+      <span>Saldo Pend.</span>
+    </div>
+    <div class="col">
+      <span>Ver Contrato</span>
+    </div>
+  </div>
+{% for Cat in Contrato %}
+  <div class="row contratoformato-filas">
+    <div class="col">
+      <span>{{ Cat.id }}</span>
+    </div>
+    <div class="col">
+      <span>{{ Cat.fechaevento }}</span>
+    </div>
+    <div class="col-sm">
+      <span>{{ Cat.ident_comtrato }}</span>
+    </div>
+    <div class="col">
+      <span>{{ Cat.estadoevento }}</span>
+    </div>
+    <div class="col">
+      <span>$ &nbsp;{{ Cat.montooriginal|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col">
+      <span>$ &nbsp;{{ Cat.montoactualizado|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col">
+      <span>$ &nbsp;{{ Cat.saldopendiente|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col">
+      <a class="btn btn-sm" href='/usuarios/contratos/{{ Cat.id }}/' style="color: blue ;">Ver</a>
+    </div>
+  </div>
+
+  <div class="row contratoformato-filas">
+    <div class="col-3">
+      <span>Tarj. Contratadas:</span>
+    </div>
+    <div class="col-3">
+      <span>Tarj. Pagas: </span>
+    </div>
+    <div class="col-3">
+      <span>Tarj. Pendientes:</span>
+    </div>
+    <div class="col-3">
+      <span><b>Valor Tarj. Actualizado:</b></span>
+    </div>
+  </div>
+  <div class="row contratoformato-filas">
+    <div class="col-3">
+      <span>{{ Cat.cant_tarj_contratadas }}</span>
+    </div>
+    <div class="col-3">
+      <span>{{ Cat.TarjetasPagadas|floatformat:1|intcomma }}</span>
+    </div>
+    <div class="col-3">
+      <span>{{ Cat.TarjetasPendientes|floatformat:1|intcomma }}</span>
+    </div>
+    <div class="col-3">
+      <span><b>$ &nbsp;{{ Cat.Valortarj_actualizado|floatformat:0|intcomma }}</b></span>
+    </div>
+  </div>
+
+
+
+
+
+{% endfor %}  
+
+</div>
+
+
+<!-- Pagos -->
+ 
+<div class="container contratoformato">
+  <div class="row">
+     <div class="col colspan-6" style="font-family: 'Lobster', sans-serif; font-weight: 500; font-size: larger;">
+         <span><b>Pagos Realizados Por Contratos</b></span>
+     </div>
+  </div>
+ {% for Cat in Contrato %}
+  <div class="row contratoformato-titulos">
+    <div class="col colspan-6">
+      <span>Numero de Contrato:</span><span>{{ Cat.id }}</span>
+    </div>
+  </div>
+  <div class="row contratoformato-titulos">
+      <div class="col">
+       <span>Fecha del Pago</span>
+      </div>
+      <div class="col">
+       <span>Identificación</span>
+      </div>
+      <div class="col">
+       <span>Forma de Pago</span>
+      </div>
+      <div class="col">
+       <span>Monto Abonado</span>
+      </div>
+      <div class="col">
+         <span>Tarjetas Canceladas</span>
+      </div>
+      <div class="col">
+        <span>Valor Tarjeta</span>
+     </div>
+     <div class="col">
+      <span>Tarjetas Pendientes</span>
+   </div>
+  </div>
+
+  {% for Pag in ControlTarjetas %}
+  {% if Pag.contrato_id == Cat.id %}  
+  
+  <div class="row contratoformato-filas">
+   
+    <div class="col">
+     <span>{{ Pag.pago_id.fechapago }}</span>
+    </div>
+    <div class="col">
+     <span>{{ Pag.pago_id.ident_pago }}</span>
+    </div>
+    <div class="col">
+     <span>{{ Pag.pago_id.formadepago }}</span>
+    </div>
+    <div class="col">
+     <span>$ {{ Pag.pago_id.monto|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col">
+      <span>{{ Pag.cant_tarjetas_pagas|floatformat:1|intcomma }}</span>
+    </div>
+    <div class="col">
+      <span>$ {{ Pag.costo_tarjeta_actualizado|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col">
+      <span>{{ Pag.cant_tarjetas_pendientes|floatformat:1|intcomma }}</span>
+    </div>
+  </div>
+ 
+ 
+ {% endif %}
+ {% endfor %} 
+
+ {% if Total %}
+ {% for tot in Total %}
+ {% if tot.contrato_id == Cat.id %} 
+  <div class="row contratoformato-titulos">
+    <div class="col colspan-3">
+      <span>Total Abonado:</span><span>&nbsp; &nbsp; &nbsp;$&nbsp;{{ tot.monto|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col colspan-3">
+      <span>Estado Actual:</span><span>&nbsp; &nbsp; &nbsp;{{ Cat.estadopago }}</span>
+    </div>
+  </div>
+{% endif %}
+{% endfor %}
+
+{% else %}
+<div class="row contratoformato-titulos">
+  <div class="col colspan-3">
+    <span>Total Abonado:</span><span></span>
+  </div>
+  <div class="col colspan-3">
+    <span>Estado Actual:</span><span>&nbsp; &nbsp; &nbsp;{{ Cat.estadopago }}</span>
+  </div>
+</div>
+
+{% endif %}
+
+
+  <div class="row" style="background-color:rgb(185, 185, 94)">
+    <div class="col colspan-6">
+    </div>
+  </div>
+ 
+ {% endfor %}  
+
+</div>
+
+
+
+<!-- Actualizacion por Inflacion -->
+
+<div class="container contratoformato">
+  <div class="row">
+       <div class="col colspan-6" style="font-family: 'Lobster', sans-serif; font-weight: 500; font-size: larger;">
+           <span><b>Actualización de Deuda sobre Saldo Deudor</b></span>
+       </div>
+   </div>
+   
+  {% for Cat in Contrato %}
+
+  <div class="row contratoformato-titulos">
+    <div class="col colspan-4">
+        <span>Numero de Contrato:</span><span>{{ Cat.id }}</span>
+    </div>
+  </div>
+  <div class="row contratoformato-titulos">
+       <div class="col">
+         <span>Saldo Pendiente</span>
+       </div>
+       <div class="col">
+         <span>Fecha de Actualizacion</span>
+       </div>
+       <div class="col">
+         <span>Porcentaje</span>
+       </div>
+       <div class="col">
+         <span>Incremento</span>
+       </div>
+  </div>
+
+  
+
+{% for Pag in Actualizacion %}
+{% if Pag.contrato_id == Cat.id %}
+<div class="row contratoformato-filas">
+
+    <div class="col">
+      <span>$ {{ Pag.saldopendiente|floatformat:0|intcomma }}</span>
+    </div>
+    <div class="col">
+      <span>{{ Pag.fechaactualizacion }}</span>
+    </div>
+    <div class="col">
+      <span>{{ Pag.porcentaje }} %</span>
+    </div>
+    <div class="col">
+      <span>$ {{ Pag.incremento|floatformat:0|intcomma }}</span>
+    </div>
+     
+</div>
+{% endif %}
+{% endfor %}
+
+{% for tot in TotalIncremento %}
+ {% if tot.contrato_id == Cat.id %} 
+  <div class="row contratoformato-titulos">
+    <div class="col colspan-4">
+      <span>Total de Incrementos:</span><span>&nbsp; &nbsp; &nbsp;$&nbsp;{{ tot.monto|floatformat:0|intcomma }}</span>
+    </div>
+  </div>
+{% endif %}
+{% endfor %}
+  <div class="row" style="background-color:rgb(185, 185, 94)">
+    <div class="col colspan-4">
+    </div>
+  </div>
+
+
+
+
+
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para usuarios Autenticados</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Ingrese con su usuario y contraseña.</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+
+
+
+{% endblock %}

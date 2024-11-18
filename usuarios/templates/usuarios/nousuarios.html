@@ -1,0 +1,58 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% csrf_token %}
+
+<div class="container Tarjeta-encabezado text-center">
+ 
+    <div class="card mb-3">
+        <div class="row Tarjeta-encabezado-titulochico text-center d-none d-block d-lg-none">
+            <div class="col-12">Datos del Cliente</div>
+        </div>
+        <div class="row">
+            <div class="card-body Tarjeta-encabezado">
+                <div class="card-title Tarjeta-encabezado-titulo text-center d-none d-lg-block">Datos del Cliente</div>
+                    <p class="card-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <span>Los datos del Cliente aún no fueron cargados</span>
+                            </div>
+                        </div>
+                    </p>
+            </div>
+        </div>
+    </div>
+  </div>
+ 
+  {% else %}
+
+  <div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+     <div class="row">
+        <div class="col-12  site-heading-TextoMedio">
+        <span><u>Este Sitio es solo para usuarios Autenticados</u></span>
+        </div>
+     </div>
+     <br>
+     <div class="row">
+        <div class="col-12  site-heading-TextoChico">
+        <span><u>Ingrese con su usuario y contraseña.</u></span>
+        </div>
+     </div>
+     <br>
+     <div class="row">
+        <div class="col-12  site-heading-TextoChico">
+        <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+        </div>
+     </div>
+  </div>
+  
+  {% endif %}
+
+
+
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% csrf_token %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+<div class="container-flow site-heading text-center">
+   <div class="row">
+      <div class="col-12 site-heading-TextoMedio"
+         style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+         {% for Cli in Cliente %}  
+         {% for Con in Contrato %}
+         <span><u>Gestión del Menú para el Contrato de: &nbsp; {{ Cli.nombrecliente }} &nbsp; &nbsp; del: &nbsp; {{ Con.fechaevento }}</u></span>
+         <br>
+         {% for Mod in ModalidaddeMenu %}
+         {% for Tipo in TipodeMenu %}
+         <div class="col-4" style="text-align: left;"><a class="btn btn-sm btn-warning btn-arrow-left" href="{% url 'contratos' Con.id %}" role="button">Volver</a></div>
+         <div class)="col-8"><span>Para la Tarjeta : &nbsp; {{ Tipo.tipodemenu }} &nbsp; &nbsp; modalidad: &nbsp; {{ Mod.modalidaddemenu }}</span></div>
+         {% endfor %}
+         {% endfor %}
+         {% endfor %}
+         {% endfor %}
+      </div>
+   </div>
+  
+</div>
+
+<div class="container-flow">
+   <div class="row">
+      <div class="col-12" style="border-left: solid; border-color: rgb(48, 27, 11);">
+
+         {% if MenuExiste %}
+         <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+            <div class="row text-center" >
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  <b><u>Menu de Entrada</u></b>
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  <b><u>Menu Principal</u></b>
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  <b><u>Postre</u></b>
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  <b><u>Bebida</u></b>
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  <b><u>Total Menú</u></b>
+               </div>
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+            </div>
+            <div class="row text-center" >
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+              <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Ent in MenuEntrada %}
+                  {{ Ent.id_item.nombremenu }}
+                  {% endfor %}
+               </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pri in MenuPrincipal %}
+                   {{ Pri.id_item.nombremenu }}
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in MenuPostre %}
+                  {{ Pos.id_item.nombremenu }}
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in MenuBebida %}
+                  {{ Pos.id_item.nombremenu }}
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                
+               </div>
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+            </div>
+            <div class="row text-center" >
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                   {% for Ent in MenuEntrada %}
+                    $ {{ Ent.costo_item }}
+                   {% endfor %}
+                </div>
+                 <div class="col col-2 text-center" style="font-size: 14;" >
+                   {% for Pri in MenuPrincipal %}
+                     $ {{ Pri.costo_item }}
+                   {% endfor %}
+                </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                   {% for Pos in MenuPostre %}
+                    $ {{ Pos.costo_item }}
+                   {% endfor %}
+                </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in MenuBebida %}
+                   $ {{ Pos.costo_item }}
+                  {% endfor %}
+               </div>
+                <div class="col col-3 text-center" style="font-size: 14;" >
+                 
+                </div>
+                <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+             </div>
+            <div class="row text-center" >
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Ent in MenuEntrada %}
+                     <img class="intro-img img-fluid" src="{{ Ent.id_item.fotomenu }}" alt="" style="width: 100;">
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pri in MenuPrincipal %}
+                     <img class="intro-img img-fluid" src="{{ Pri.id_item.fotomenu }}" alt="" style="width: 100;"> 
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in MenuPostre %}
+                     <img class="intro-img img-fluid" src="{{ Pos.id_item.fotomenu }}" alt="" style="width: 100;">
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in MenuBebida %}
+                     <img class="intro-img img-fluid" src="{{ Pos.id_item.fotomenu }}" alt="" style="width: 100;">
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  $ {{ TotalTarjeta }}
+               </div>
+               <div class="col col-1 text-center" style="font-size: 14;" >
+                  
+               </div>
+            </div>
+
+
+         </div>
+         {% endif %}
+         
+         
+
+      </div>
+
+
+
+
+   </div>
+</div>
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para usuarios Autenticados</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Ingrese con su usuario y contraseña.</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+
+
+
+{% endblock %}
+
+
+
