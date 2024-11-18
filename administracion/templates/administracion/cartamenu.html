@@ -1,0 +1,361 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% csrf_token %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% if request.user.is_superuser %}
+
+<div class="container-flow site-heading text-center">
+   <div class="row">
+      <div class="col-4 col-md-2">
+      </div>
+      <div class="col-8 col-md-10 site-heading-TextoMedio" style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+      <span><u>Gestion de la Carta del Menu</u></span>
+      </div>
+   </div>
+  
+</div>
+
+<div class="container-flow">
+
+<!-- Modal Delete -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h6 class="modal-title">Desactivar el Menu: <span></span></h6>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <form id="DeleteForm" data-bs-action="/administracion/formmenudesactivar/" action="">
+       <div class="modal-body">
+         ¿ ATENCIÓN -- Si desactiva el menú ya no estará disponible en la Carta ?
+         
+         ¿ SEGURO QUE DESEA DESACTIVAR EL PLATO ?
+
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+         <button type="submit" class="btn btn-danger">Eliminar</button>
+       </div>
+       </form>
+     </div>
+   </div>
+ </div>
+
+<!-- Modal Update -->
+<div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h6 class="modal-title">Modificar el menú <span></span></h6>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <form id="UpdateForm" data-bs-action="/administracion/formmenuupdate/" action="">
+    <div class="modal-body">
+      ¡¡¡¡¡ ATENCIÓN -- Se modificaran las caracteristicas y costos del Plato !!!!
+
+      ¿ ESTA SEGURO..... ?
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      <button type="submit" class="btn btn-danger">Modificar</button>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+
+
+
+
+
+   <div class="row">
+      <div class="col-4 col-md-2">
+         <div class="container">
+            <nav class="navbar navbar-expand-sm flex-column">
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                 <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarText">
+                                    
+                  <ul class="nav flex-column">
+                     <span style="color: #e2da92;">
+                        <b><u>Tablas:</b></u>
+                     </span>
+                     
+                     <li class="nav-item"">
+                        <a href="{% url 'admin:index' %}" class="linksCategorias" >Admin. Sitio</a> &nbsp; &nbsp; &nbsp;
+                     </li>
+                     
+                     {% for Sect in Sector %}
+                     
+                     <li class="nav-item">
+                        <a href="{% url Sect.linkpagina %}" class="linksCategorias" >{{ Sect.titulo }}</a> &nbsp; &nbsp; &nbsp;
+                     </li>
+                     
+                     {% endfor %}
+                     
+                  </ul>
+               </div>
+            </nav>
+         </div>
+      </div>
+      <div class="col-8 col-md-10" style="border-left: solid; border-color: rgb(48, 27, 11);">
+         <div class="container_flow text-center">
+            <div class="row text-center">
+ 
+               <div class="col-12 text-center"  style="border: solid; border-color: rgb(48, 27, 11)">
+                  <span style="color: #e2da92;"><u>Carta de Menú</u></span>
+                  <br></br>
+                  <div class="row">
+                     <div class="col-4" style="text-align: left;"><a class="btn btn-sm btn-warning btn-arrow-left" href="{% url 'Administracion' %}" role="button">Volver</a></div>
+                  
+                  
+                     <div class="col-4">
+                     <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Tipo de Menú
+                        </button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for Usu in Familia %}
+                        <a class="dropdown-item" href="{% url 'formmenu' Usu.id %}">{{ Usu.nombrefamilia }} </a>
+                        {% endfor %}
+                     </div>
+                     </div>
+                     </div>
+                     <div class="col-4" style="text-align:center;"><a class="btn btn-success text-center" href="{% url 'formmenucreate' %}" role="button">Cargar Menu</a></div>
+                  </div>
+                  <p></p> 
+               </div>
+            </div>
+            {% if Carta %}
+            <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+               <div class="row text-center" >
+                  <div class="col col-12" style="font-size: 14;" >
+                     <b><u>{{ Tipo }}</u></b>
+                  </div>
+               </div>
+               <div class="row text-center" >
+                  <div class="col col-2" style="font-size: 14;">
+                     <b><u>Nombre</u></b>
+                  </div>
+                  <div class="col col-2" style="font-size: 14;">
+                     <b><u>Accion</u></b>
+                  </div>
+                  <div class="col col-2" style="font-size: 14;">
+                     <b><u>Precio</u></b>
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     <b><u>Juv.</u></b>
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     <b><u>May.</u></b>
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     <b><u>Norm.</u></b>
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     <b><u>Cel.</u></b>
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     <b><u>Veg.</u></b>
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     <b><u>Vejet.</u></b>
+                  </div>
+               </div>
+               {% for Car in Carta %}
+               <div class="row text-center" >
+                  <div class="col col-2" style="font-size: 14;">
+                     {{ Car.nombremenu }}
+                  </div>
+                  <div class="col col-2" style="font-size: 14;">
+                     <a class="btn btn-sm" data-bs-toggle="modal" data-bs-target= "#UpdateModal" data-bs-id="{{ Car.id_plato }}" data-bs-nombre="{{ Car.nombremenu }}" data-bs-monto="{{ Car.costomenu }}" href="#" style="color: blue ;">Mod.</a> &nbsp; &nbsp; 
+                     <a class="btn btn-sm" data-bs-toggle="modal" data-bs-target= "#DeleteModal" data-bs-id="{{ Car.id_plato }}" data-bs-nombre="{{ Car.nombremenu }}" data-bs-monto="{{ Car.costomenu }}" href="#" style="color: red;">Elim.</a>
+                  </div>
+                  <div class="col col-2" style="font-size: 14;">
+                     $  {{ Car.costomenu|floatformat:0|intcomma }}
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     {% if Car.juvenil == True %}
+                     <input class="form-check-input"  type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                     {% else %}
+                     <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked" disabled>
+                     {% endif %}
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     {% if Car.mayor == True %}
+                     <input class="form-check-input"  type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                     {% else %}
+                     <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked" disabled>
+                     {% endif %}
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     {% if Car.normal == True %}
+                     <input class="form-check-input"  type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                     {% else %}
+                     <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked" disabled>
+                     {% endif %}
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     {% if Car.celiaco == True %}
+                     <input class="form-check-input"  type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                     {% else %}
+                     <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked" disabled>
+                     {% endif %}
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     {% if Car.vegano == True %}
+                     <input class="form-check-input"  type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                     {% else %}
+                     <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked" disabled>
+                     {% endif %}
+                  </div>
+                  <div class="col col-1" style="font-size: 14;">
+                     {% if Car.vegetariano == True %}
+                     <input class="form-check-input"  type="checkbox" value="" id="flexCheckChecked" checked disabled>
+                     {% else %}
+                     <input class="form-check-input " type="checkbox" value="" id="flexCheckChecked" disabled>
+                     {% endif %}
+                  </div>
+
+
+
+               </div>
+               {%endfor %}
+            </div>
+            {% endif %}
+
+
+
+
+
+
+         </div>
+      </div>
+
+
+
+
+   </div>
+</div>
+
+
+<script>
+   var DeleteModal = document.getElementById('DeleteModal')
+   DeleteModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     var button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     var id = button.getAttribute('data-bs-id')
+     var nombre = button.getAttribute('data-bs-nombre')
+     var monto = button.getAttribute('data-bs-monto')
+     
+     var mensaje=nombre+" con costo de: $ "+ monto
+     // If necessary, you could initiate an AJAX request here
+     // and then do the updating in a callback.
+     //
+     // Update the modal's content.
+     var modalTitle = DeleteModal.querySelector('.modal-title span')
+     modalTitle.textContent = mensaje
+
+
+     var DeleteForm = DeleteModal.querySelector('#DeleteForm')
+     var action=DeleteForm.getAttribute("data-bs-action")
+     
+     //var action= "/administracion/tarjetasdelete/"
+     
+     DeleteForm.setAttribute("action", action+id) 
+
+   })
+   
+
+   var UpdateModal = document.getElementById('UpdateModal')
+   UpdateModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     var button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     var id = button.getAttribute('data-bs-id')
+     var nombre = button.getAttribute('data-bs-nombre')
+     var monto = button.getAttribute('data-bs-monto')
+     
+     var mensaje=nombre+" con costo de: $ "+ monto
+     // If necessary, you could initiate an AJAX request here
+     // and then do the updating in a callback.
+     //
+     // Update the modal's content.
+     var modalTitle = UpdateModal.querySelector('.modal-title span')
+     modalTitle.textContent = mensaje
+
+
+     var UpdateForm = UpdateModal.querySelector('#UpdateForm')
+     var action=UpdateForm.getAttribute("data-bs-action")
+     
+     //var action= "/administracion/tarjetasdelete/"
+     
+     UpdateForm.setAttribute("action", action+id) 
+
+   })
+
+   
+   </script>  
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para Usuarios con Perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>¡¡¡¡¡¡¡¡¡    ACCESO PROHIBIDO     !!!!!!!!!</u></span>
+      </div>
+   </div>
+   <br>
+   <br>
+</div>
+
+{% endif %}
+
+
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para usuarios Autenticados con perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Ingrese con su usuario y contraseña.</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

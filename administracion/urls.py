@@ -1,0 +1,47 @@
+from django.urls import path
+from administracion import views
+
+
+urlpatterns = [
+    
+    
+    path('',views.administracion, name="Administracion"),
+    path('adminusuario',views.Registrar.as_view(), name="adminusuario"),
+    #path('adminusuario/',views.adminusuario, name="adminusuario"),
+    path('admincliente/',views.admincliente, name="admincliente"),
+    path('admincontratos/',views.admincontratos, name="admincontratos"),
+    path('admintarjetas/',views.admintarjetas, name="admintarjetas"),
+    path('adminpagos/',views.adminpagos, name="adminpagos"),
+    path('adminmenu/',views.adminmenu, name="adminmenu"),
+    path('adminactualizacion/',views.adminactualizacion, name="adminactualizacion"),
+    path('admingastos/',views.admingastos, name="admingastos"),
+    path('usuarios/',views.get_usuarios, name="get_usuarios"),
+    path('formcliente/<int:categoria_id>/',views.formcliente, name="formcliente"),
+    path('formcontrato/<int:categoria_id>/',views.formcontrato, name="formcontrato"),
+    path('formcontratoregistrado/<int:categoria_id>/',views.formcontratoregistrado, name="formcontratoregistrado"),
+    path('formtarjetas/<int:categoria_id>/',views.formtarjetas, name="formtarjetas"),
+    path('formpagos/<int:categoria_id>/',views.formpagos, name="formpagos"),
+    path('formmenu/<int:categoria_id>/',views.formmenu, name="formmenu"),
+    path('formactualizaciones/<int:categoria_id>/',views.formactualizaciones, name="formactualizaciones"),
+    path('formgasto/<int:categoria_id>/',views.formgasto, name="formgasto"),
+    path('formtarjetasupdate/<int:categoria_id>/',views.formtarjetasupdate, name="formtarjetasupdate"),
+    path('formpagosupdate/<int:categoria_id>/',views.formpagosupdate, name="formpagosupdate"),
+    path('formactualizacionupdate/<int:categoria_id>/',views.formactualizacionupdate, name="formactualizacionupdate"),
+    path('formgastosupdate/<int:categoria_id>/',views.formgastosupdate, name="formgastosupdate"),
+    path('formtarjetascreate/<int:categoria_id>/',views.formtarjetascreate, name="formtarjetascreate"),
+    path('formpagoscreate/<int:categoria_id>/',views.formpagoscreate, name="formpagoscreate"),
+    path('formgastoscreate/<int:categoria_id>/',views.formgastoscreate, name="formgastoscreate"),
+    path('formmenucreate/',views.formmenucreate, name="formmenucreate"),
+    path('formmenudesactivar/<int:categoria_id>/',views.formmenudesactivar, name="formmenudesactivar"),
+    path('formmenuupdate/<int:categoria_id>/',views.formmenuupdate, name="formmenuupdate"),
+    path('formactualizacioncreate/<int:categoria_id>/',views.formactualizacioncreate, name="formactualizacioncreate"),
+    path('tarjetasdelete/<int:categoria_id>/',views.tarjetasdelete, name="tarjetasdelete"),
+    path('borrarpagos/<int:categoria_id>/',views.borrarpagos, name="borrarpagos"),
+    path('borraractualizacion/<int:categoria_id>/',views.borraractualizacion, name="borraractualizacion"),
+    path('borrargasto/<int:categoria_id>/',views.borrargasto, name="borrargasto"),
+    path('cargarmenu/<int:categoria_id>/',views.cargarmenu, name="cargarmenu"),
+    path('grabarmenu/<int:categoria_id>/<int:familia>/<int:item>/',views.grabarmenu, name="grabarmenu"),
+    path('grabarservicio/<int:categoria_id>/<int:familia>/<int:item>/',views.grabarservicio, name="grabarservicio"),
+    path('cargarservicios/<int:categoria_id>/<int:familia>/',views.cargarservicios, name="cargarservicios"),
+    path('modal/',views.modal, name="modal"),
+   ]

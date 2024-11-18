@@ -1,0 +1,404 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% csrf_token %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% if request.user.is_superuser %}
+ 
+ 
+<div class="container-flow site-heading text-center">
+   <div class="row">
+      <div class="col-4 col-md-2">
+         
+      </div>
+      <div class="col-8 col-md-10 site-heading-TextoMedio"
+         style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+         {% for Cli in Cliente %}  
+         {% for Con in Contrato %}
+         <span><u>Gestión de Pagos para el Contrato de: &nbsp; {{ Cli.nombrecliente }} &nbsp; &nbsp; del: &nbsp; {{ Con.fechaevento }}</u></span>
+         {% endfor %}
+         {% endfor %}
+      </div>
+   </div>
+
+</div>
+
+<div class="container-flow">
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Eliminar <span></span></h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="DeleteForm" data-bs-action="/administracion/borrarpagos/" action="">
+          <div class="modal-body">
+            ¿ ATENCIÓN -- Si elimina el registro se actualizara el Saldo Deudor ?
+            
+            ¿ SEGURO QUE DESEA ELIMINAR EL PAGO ?
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal Update -->
+<div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h6 class="modal-title">Modificar <span></span></h6>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <form id="UpdateForm" data-bs-action="/administracion/formpagosupdate/" action="">
+       <div class="modal-body">
+         ¿ ATENCIÓN -- Si modifica el registro se actualizara el Saldo Deudor ?
+
+         ¿ ESTA SEGURO..... ?
+
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+         <button type="submit" class="btn btn-danger">Modificar</button>
+       </div>
+       </form>
+     </div>
+   </div>
+ </div>
+
+   <div class="row">
+      
+      <div class="col-4 col-md-2">
+         <div class="container">
+            <nav class="navbar navbar-expand-sm flex-column">
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                  aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarText">
+
+                  <ul class="nav">
+                     <span style="color: #e2da92;">
+                        <b><u>Tablas:</b></u>
+                     </span>
+
+                     <li class="nav-item">
+                        <a href="{% url 'admin:index' %}" class="linksCategorias">Admin. Sitio</a> &nbsp; &nbsp; &nbsp;
+                     </li>
+
+                     {% for Sect in Sector %}
+
+                     <li class="nav-item">
+                        <a href="{% url Sect.linkpagina %}" class="linksCategorias">{{ Sect.titulo }}</a> &nbsp; &nbsp;
+                        &nbsp;
+                     </li>
+
+                     {% endfor %}
+
+                  </ul>
+               </div>
+            </nav>
+         </div>
+      </div>
+      
+      <div class="col-8 col-md-10" style="border-left: solid; border-color: rgb(48, 27, 11); ">
+
+         <div class="container_flow text-center">
+            <div class="col-12 text-center"  style="border: solid; border-color: rgb(48, 27, 11)">
+               
+               <div class="row">
+                  {% for Con in Contrato %}
+                  <div class="col-4" style="text-align: left;"><a class="btn btn-sm btn-warning btn-arrow-left" href="{% url 'adminpagos' %}" role="button">Volver</a></div>
+                  <div class="col-4"><span style="color: #e2da92; text-align: center;"><u>Pagos Realizados</u></span></div>
+                  <div class="col-4" style="text-align:center;"><a class="btn btn-success text-center" href="{% url 'formpagoscreate' Con.id %}" role="button">Cargar Pagos</a></div>
+                  {% endfor %}
+               </div>
+               
+               <br>
+               {% if Pagos %}
+               <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+                  <div class="row text-center" >
+                     <div class="col col-2" style="font-size: 14;" >
+                        <b><u>Ident Pago</u></b>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        <b><u>Fecha Pago</u></b>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        <b><u>Forma de Pago</u></b>
+                     </div>
+                     <div class="col col-4" style="font-size: 14;">
+                        <b><u>Acciones</u></b>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        <b><u>Monto</u></b>
+                     </div>
+                  </div>
+               {% for Tar in Pagos %}
+                  <div class="row text-center">
+                     <div class="col col-2" style="font-size: 14;">
+                        {{ Tar.ident_pago }}
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        {{ Tar.fechapago }}
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        {{ Tar.formadepago }}
+                     </div>
+                     <div class="col col-4">
+                        <a class="btn btn-sm" data-bs-toggle="modal" data-bs-target= "#UpdateModal" data-bs-id="{{ Tar.id }}" data-bs-pago="{{ Tar.ident_pago }}" data-bs-dia="{{ Tar.fechapago }}" data-bs-monto="{{ Tar.monto }}" href="#" style="color: blue ;">Modificar</a> &nbsp; &nbsp; 
+                        <a class="btn btn-sm" data-bs-toggle="modal" data-bs-target= "#DeleteModal" data-bs-id="{{ Tar.id }}" data-bs-pago="{{ Tar.ident_pago }}" data-bs-dia="{{ Tar.fechapago }}" data-bs-monto="{{ Tar.nonto }}" href="#" style="color: red;">Eliminar</a>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        $ {{ Tar.monto|floatformat:0|intcomma }}
+                     </div>
+                  </div>
+                 
+               {% endfor %}
+                  <div class="row text-center" >
+                     <div class="col col-12" style="font-size: 14;">
+                        Total de Pagos para  {{ Total }} Comprobante/s: <b> $ {{ TotalPagos|floatformat:0|intcomma }} </b>
+                     </div>
+                  </div>
+               </div>
+               {% else %}
+               <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+                  <div class="row text-center" >
+                     <div class="col-12"><span style="color: #1d1a05; text-align: center;"><b>No Existen Pagos Registrados</b></span></div>
+                  </div>
+               </div>
+               {% endif %}
+            </div>
+         </div>
+
+
+
+
+
+         <br>
+         <div class="row">
+         <div class="col-12 text-center">
+         <span style="color: #e2da92; text-align: center;">
+            <b><u>Estado del Contrato</b></u>
+         </span>
+         </div>
+         </div>
+         <br>
+                 
+         <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+            <div class="row text-center" >
+               
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Ident. del Contrato</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Fecha del Evento</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Estado del Pago</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Monto Original</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Monto Actualizado</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Saldo Pendiente</u></b>
+               </div>
+            </div>
+         {% for Con in Contrato %}
+            <div class="row text-center" >
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {{ Con.ident_comtrato }}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {{ Con.fechaevento }}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {{ Con.estadopago }}
+               </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                  $ {{ Con.montooriginal|floatformat:0|intcomma }}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  $ {{ Con.montoactualizado|floatformat:0|intcomma }}
+               </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                  <b>$ {{ Con.saldopendiente|floatformat:0|intcomma }}</b>
+                </div>
+             </div>
+            
+         {% endfor %}
+         </div>
+            
+      
+         <br>
+         <div class="row">
+         <div class="col-12 text-center">
+         <span style="color: #e2da92; text-align: center;">
+            <b><u>Tarjetas Pendientes de Pago</b></u>
+         </span>
+         </div>
+         </div>
+         <br>
+                 
+         <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+            <div class="row text-center" >
+               
+               <div class="col col-6" style="font-size: 14;">
+                  <b><u>Tarjetas Pendientes</u></b>
+               </div>
+               <div class="col col-6" style="font-size: 14;">
+                  <b><u>Valor Actualizado de Tarjeta</u></b>
+               </div>
+              
+            </div>
+         {% for Con in Contrato %}
+            <div class="row text-center" >
+               <div class="col col-6 text-center" style="font-size: 14;" >
+                  {{ Con.TarjetasPendientes|floatformat:1|intcomma }}
+               </div>
+               <div class="col col-6 text-center" style="font-size: 14;" >
+                  $ {{ Con.Valortarj_actualizado|floatformat:0|intcomma }}
+               </div>
+            </div>
+            
+         {% endfor %}
+         </div>
+      
+      </div>
+
+
+
+
+   </div>
+</div>
+ 
+<script>
+   var DeleteModal = document.getElementById('DeleteModal')
+   DeleteModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     var button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     var id = button.getAttribute('data-bs-id')
+     var pago = button.getAttribute('data-bs-pago')
+     var dia = button.getAttribute('data-bs-dia')
+     var monto = button.getAttribute('data-bs-monto')
+     
+     var mensaje=pago+" del dia: "+dia+" por: $ "+ monto
+     // If necessary, you could initiate an AJAX request here
+     // and then do the updating in a callback.
+     //
+     // Update the modal's content.
+     var modalTitle = DeleteModal.querySelector('.modal-title span')
+     modalTitle.textContent = mensaje
+
+
+     var DeleteForm = DeleteModal.querySelector('#DeleteForm')
+     var action=DeleteForm.getAttribute("data-bs-action")
+     
+     //var action= "/administracion/tarjetasdelete/"
+     
+     DeleteForm.setAttribute("action", action+id) 
+
+   })
+   
+
+   var UpdateModal = document.getElementById('UpdateModal')
+   UpdateModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     var button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     var id = button.getAttribute('data-bs-id')
+     var pago = button.getAttribute('data-bs-pago')
+     var dia = button.getAttribute('data-bs-dia')
+     var monto = button.getAttribute('data-bs-monto')
+     
+     var mensaje=pago+" del dia: "+dia+" por: $ "+ monto
+     // If necessary, you could initiate an AJAX request here
+     // and then do the updating in a callback.
+     //
+     // Update the modal's content.
+     var modalTitle = UpdateModal.querySelector('.modal-title span')
+     modalTitle.textContent = mensaje
+
+
+     var UpdateForm = UpdateModal.querySelector('#UpdateForm')
+     var action=UpdateForm.getAttribute("data-bs-action")
+     
+     //var action= "/administracion/tarjetasdelete/"
+     
+     UpdateForm.setAttribute("action", action+id) 
+
+   })
+
+   
+   </script>  
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para Usuarios con Perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>¡¡¡¡¡¡¡¡¡    ACCESO PROHIBIDO     !!!!!!!!!</u></span>
+      </div>
+   </div>
+   <br>
+   <br>
+</div>
+
+{% endif %}
+
+
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para usuarios Autenticados con perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Ingrese con su usuario y contraseña.</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+
+
+{% endblock %}
+

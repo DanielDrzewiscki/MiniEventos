@@ -1,0 +1,569 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% load crispy_forms_tags %}
+
+{% csrf_token %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% if request.user.is_superuser %}
+ 
+ 
+<div class="container-flow site-heading text-center">
+   <div class="row">
+      <div class="col-4 col-md-2">
+         
+      </div>
+      <div class="col-8 col-md-10 site-heading-TextoMedio"
+         style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+         {% for Cli in Cliente %}  
+         {% for Con in Contrato %}
+         <span><u>Gestión de Tarjetas para el Contrato de: &nbsp; {{ Cli.nombrecliente }} &nbsp; &nbsp; del: &nbsp; {{ Con.fechaevento }}</u></span>
+         {% endfor %}
+         {% endfor %}
+      </div>
+   </div>
+
+</div>
+
+<div class="container-flow">
+
+    <!-- Modal Delete -->
+    <div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6 class="modal-title">Eliminar <span></span></h6>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form id="DeleteForm" data-bs-action="/administracion/tarjetasdelete/" action="">
+          <div class="modal-body">
+            ¿ Seguro que deseas eliminar este registro ?
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+<!-- Modal Update -->
+<div class="modal fade" id="UpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h6 class="modal-title">Modificar <span></span></h6>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+       </div>
+       <form id="UpdateForm" data-bs-action="/administracion/formtarjetasupdate/" action="">
+       <div class="modal-body">
+         ¿ ATENCIÓN -- Si modifica el registro se eliminara el Menú Asociado ?
+
+         ¿ ESTA SEGURO..... ?
+
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+         <button type="submit" class="btn btn-danger">Modificar</button>
+       </div>
+       </form>
+     </div>
+   </div>
+ </div>
+
+   <div class="row">
+      
+      <div class="col-4 col-md-2">
+         <div class="container">
+            <nav class="navbar navbar-expand-sm flex-column">
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                  aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarText">
+
+                  <ul class="nav">
+                     <span style="color: #e2da92;">
+                        <b><u>Tablas:</b></u>
+                     </span>
+
+                     <li class="nav-item">
+                        <a href="{% url 'admin:index' %}" class="linksCategorias">Admin. Sitio</a> &nbsp; &nbsp; &nbsp;
+                     </li>
+
+                     {% for Sect in Sector %}
+
+                     <li class="nav-item">
+                        <a href="{% url Sect.linkpagina %}" class="linksCategorias">{{ Sect.titulo }}</a> &nbsp; &nbsp;
+                        &nbsp;
+                     </li>
+
+                     {% endfor %}
+
+                  </ul>
+               </div>
+            </nav>
+         </div>
+      </div>
+      
+      <div class="col-8 col-md-10" style="border-left: solid; border-color: rgb(48, 27, 11); ">
+
+         <div class="container_flow text-center">
+            <div class="col-12 text-center"  style="border: solid; border-color: rgb(48, 27, 11)">
+               {% if Tarjeta %}
+               <div class="row">
+                  {% for Con in Contrato %}
+                  <div class="col-2" style="text-align: left;"><a class="btn btn-sm btn-warning btn-arrow-left" href="{% url 'admintarjetas' %}" role="button">Volver</a></div>
+                  <div class="col-8"><span style="color: #e2da92; text-align: center;"><u>Tarjetas Contratadas: &nbsp; &nbsp; {{ Total }} &nbsp; &nbsp;Tarj. Pendientes: &nbsp; &nbsp; {{ Pend|floatformat:1|intcomma }} &nbsp; &nbsp; Valor Tarjeta: &nbsp; &nbsp; $ {{ Valor|floatformat:0|intcomma }} </u></span></div>
+                  <div class="col-2" style="text-align:center;"><a class="btn btn-success text-center" href="{% url 'formtarjetascreate' Con.id %}" role="button">Cargar Tarjetas</a></div>
+                  {% endfor %}
+               </div>
+               
+               <br>
+               
+               <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+                  <div class="row text-center" >
+                     <div class="col col-1" style="font-size: 14;" >
+                        <b><u>Tarjetas</u></b>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        <b><u>Tipo de Menu</u></b>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        <b><u>Modalidad</u></b>
+                     </div>
+                     <div class="col col-4" style="font-size: 14;">
+                        <b><u>Acciones</u></b>
+                     </div>
+                     <div class="col col-1" style="font-size: 14;">
+                        <b><u>Menu</u></b>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        <b><u>Valor</u></b>
+                     </div>
+                  </div>
+               {% for Tar in Tarjeta %}
+                  <div class="row text-center">
+                     <div class="col col-1" style="font-size: 14;">
+                        {{ Tar.cant_tarjetas }}
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        {{ Tar.tipodemenu }}
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        {{ Tar.modalidaddelmenu }}
+                     </div>
+                     <div class="col col-4">
+                        <a class="btn btn-sm" data-bs-toggle="modal" data-bs-target= "#UpdateModal" data-bs-id="{{ Tar.id }}" data-bs-cant="{{ Tar.cant_tarjetas }}" data-bs-tipo="{{ Tar.tipodemenu }}" data-bs-modalidad="{{ Tar.modalidaddelmenu }}" href="#" style="color: blue ;">Modificar</a> &nbsp; &nbsp; 
+                        <a class="btn btn-sm" data-bs-toggle="modal" data-bs-target= "#DeleteModal" data-bs-id="{{ Tar.id }}" data-bs-cant="{{ Tar.cant_tarjetas }}" data-bs-tipo="{{ Tar.tipodemenu }}" data-bs-modalidad="{{ Tar.modalidaddelmenu }}" href="#" style="color: red;">Eliminar</a>
+                     </div>
+                     <div class="col col-1">
+                        <a class="btn btn-sm" href="{% url 'cargarmenu' Tar.id %}" style="color: rgb(66, 47, 12) ;">Menu</a>
+                     </div>
+                     <div class="col col-2" style="font-size: 14;">
+                        $ {{ Tar.costo_tarjeta|floatformat:0|intcomma }}
+                     </div>
+                  </div>
+                 
+               {% endfor %}
+                  <div class="row text-center" >
+                     <div class="col col-12" style="font-size: 14;">
+                        Total del Menu para  {{ Total }} Tarjetas: <b> $ {{ TotalTarjeta|floatformat:0|intcomma }} </b>
+                     </div>
+                  </div>
+               </div>
+               {% endif %}
+            </div>
+         </div>
+
+         <br>
+         <div class="row">
+         <div class="col-12 text-center">
+         <span style="color: #e2da92; text-align: center;">
+            <b><u>Servicios Comunes al Contrato</b></u>
+         </span>
+         </div>
+         </div>
+         <br>
+         <table style="border: solid; border: 2;">
+            <div class="row">
+               <div class="col-2" style="text-align: center;">
+
+               </div>
+               <div class="col-2" style="text-align: center;">
+                  <div class="dropdown">
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mesa Dulce
+                     </button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for Ent in CartaMesaDulce %}
+                        <a class="dropdown-item" href="{% url 'grabarservicio' Con '4' Ent.id %}">{{ Ent.nombremenu }} &nbsp; &nbsp; $ {{ Ent.costomenu|floatformat:0|intcomma }}</a>
+                        {% endfor %}
+                     </div>
+                  </div> 
+                </div>
+               <div class="col-2" style="text-align: center;">
+               <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     Mesa Caliente
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                     {% for Pri in CartaMesaCaliente %}
+                     <a class="dropdown-item" href="{% url 'grabarservicio' Con '5' Pri.id %}">{{ Pri.nombremenu }} &nbsp; &nbsp; $ {{ Pri.costomenu|floatformat:0|intcomma }}</a>
+                     {% endfor %}
+                  </div>
+               </div>   
+               </div>
+               <div class="col-2" style="text-align: center;">
+                  <div class="dropdown">
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Cierre
+                     </button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for Pos in CartaCierre %}
+                        <a class="dropdown-item" href="{% url 'grabarservicio' Con '6' Pos.id %}">{{ Pos.nombremenu }} &nbsp; &nbsp; $ {{ Pos.costomenu|floatformat:0|intcomma }}</a>
+                        {% endfor %}
+                     </div>
+                  </div> 
+               </div>
+               <div class="col-2" style="text-align: center;">
+                  <div class="dropdown">
+                     <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Cotillon
+                     </button>
+                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for Pos in CartaCotillon %}
+                        <a class="dropdown-item" href="{% url 'grabarservicio' Con '8' Pos.id %}">{{ Pos.nombremenu }} &nbsp; &nbsp; $ {{ Pos.costomenu|floatformat:0|intcomma }}</a>
+                        {% endfor %}
+                     </div>
+                  </div> 
+               </div>
+               <div class="col-2" style="text-align: center;">
+
+               </div>
+            </div>
+            <br>
+           
+            
+         </div>
+         
+         
+            
+         </table>
+         
+         <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+            <div class="row text-center" >
+               
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Cant. Tarjetas</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Mesa Dulce</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Mesa Caliente</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Cierre de Fiesta</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Cotillon</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 14;">
+                  <b><u>Total</u></b>
+               </div>
+            </div>
+         {% if ServicioExiste %}
+            <div class="row text-center" >
+               <div class="col col-2 text-center" style="font-size: 14;" >
+               
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                   {% for Ent in MesaDulce %}
+                   {{ Ent.id_item.nombremenu }} -- $ {{ Ent.costo_item|floatformat:0|intcomma }} p/t
+                   {% endfor %}
+                </div>
+                 <div class="col col-2 text-center" style="font-size: 14;" >
+                   {% for Pri in MesaCaliente %}
+                    {{ Pri.id_item.nombremenu }} -- $ {{ Pri.costo_item|floatformat:0|intcomma }} p/t
+                   {% endfor %}
+                </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                   {% for Pos in Cierre %}
+                   {{ Pos.id_item.nombremenu }} -- $ {{ Pos.costo_item|floatformat:0|intcomma }} p/t
+                   {% endfor %}
+                </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in Cotillon %}
+                  {{ Pos.id_item.nombremenu }} -- $ {{ Pos.costo_item|floatformat:0|intcomma }} p/t
+                  {% endfor %}
+               </div>
+                <div class="col col-2 text-center" style="font-size: 14;" >
+               
+                </div>
+             </div>
+            <div class="row text-center" >
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {{ Total }}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Ent in MesaDulce %}
+                   <img class="intro-img img-fluid" src="{{ Ent.id_item.fotomenu }}" alt="" style="width: 100;">
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pri in MesaCaliente %}
+                   <img class="intro-img img-fluid" src="{{ Pri.id_item.fotomenu }}" alt="" style="width: 100;"> 
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in Cierre %}
+                   <img class="intro-img img-fluid" src="{{ Pos.id_item.fotomenu }}" alt="" style="width: 100;">
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                  {% for Pos in Cotillon %}
+                   <img class="intro-img img-fluid" src="{{ Pos.id_item.fotomenu }}" alt="" style="width: 100;">
+                  {% endfor %}
+               </div>
+               <div class="col col-2 text-center" style="font-size: 14;" >
+                <b> $ {{ TotalServicio|floatformat:0|intcomma }} </b>
+               </div>
+            </div>
+    
+         {% endif %}
+         </div>
+      
+         <div class="container">
+           
+               <div class="row justify-content-center">
+                  <div class="col-1 text-center"></div>
+                  <div class="col-4 text-center">   
+                     <span style="color: #e2da92; text-align: center;">
+                        <b><u>Servicios Adicionales</b></u>
+                     </span>
+                     <form action="{% url 'cargarservicios' Con '9' %}" method="post" enctype="multipart/form-data" style="color: white; text-align: center;"">
+                        {% csrf_token %}
+                        {{ formShow|crispy }} 
+                        <button type="submit" class="btn btn-primary">Cargar Servicios Adicionales</button>
+                    </form>
+
+                  </div>
+                  <div class="col-2 text-center"></div>
+                  <div class="col-4 text-center">   
+                     <span style="color: #e2da92;text-align: center;">
+                        <b><u>Servicios de Logistica</b></u>
+                     </span>
+                     <form action="{% url 'cargarservicios' Con '10' %}" method="post" enctype="multipart/form-data" style="color: white; text-align: center;"">
+                        {% csrf_token %}
+                        {{ formServicio|crispy}} 
+                        <button type="submit" class="btn btn-primary">Cargar Servicios de Logistica</button>
+                     </form>
+
+                  </div>
+                  <div class="col-1 text-center"></div>
+               </div>
+            
+         </div>
+      
+      {% if TotalContrato %}
+         <br>
+         <div class="row">
+         <div class="col-12 text-center">
+         <span style="color: #e2da92; text-align: center;">
+            <b><u>Total Servicio Contratado</b></u>
+         </span>
+         </div>
+         </div>
+         <br>
+         <div class="table" style="border: solid; border-color: rgb(48, 27, 11); background-color: aliceblue;">
+            <div class="row text-center" >
+
+               <div class="col col-2" style="font-size: 16;">
+                  <b><u>Cant. Tarjetas</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                  <b><u>Tot. Tarjetas</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                  <b><u>Tot. Servicio</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                  <b><u>Tot. Adicional</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                  <b><u>Tot. Logistica</u></b>
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                  <b><u>Tot. Contrato</u></b>
+               </div>
+            </div>
+            {% for Tot in TotalContrato %}
+            <div class="row text-center" >
+
+               <div class="col col-2" style="font-size: 16;">
+                $ {{ Tot.cant_tarjetas }}
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                $ {{ Tot.tot_tarjetas|floatformat:0|intcomma }}
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                $ {{ Tot.tot_comunes|floatformat:0|intcomma }}
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                $ {{ Tot.tot_adicionales|floatformat:0|intcomma }}
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                $ {{ Tot.tot_logistica|floatformat:0|intcomma }}
+               </div>
+               <div class="col col-2" style="font-size: 16;">
+                $ <b>{{ Tot.tot_contrato|floatformat:0|intcomma }}</b>
+               </div>
+            </div>
+            {% endfor %}
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         </div>
+         
+      
+      {% endif %}
+      
+      </div>
+
+
+
+
+   </div>
+</div>
+ 
+<script>
+   var DeleteModal = document.getElementById('DeleteModal')
+   DeleteModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     var button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     var id = button.getAttribute('data-bs-id')
+     var cant = button.getAttribute('data-bs-cant')
+     var tipo = button.getAttribute('data-bs-tipo')
+     var modalidad = button.getAttribute('data-bs-modalidad')
+     
+     var mensaje=cant+" tarjetas del menu: "+tipo+" modalidad: "+ modalidad
+     // If necessary, you could initiate an AJAX request here
+     // and then do the updating in a callback.
+     //
+     // Update the modal's content.
+     var modalTitle = DeleteModal.querySelector('.modal-title span')
+     modalTitle.textContent = mensaje
+
+
+     var DeleteForm = DeleteModal.querySelector('#DeleteForm')
+     var action=DeleteForm.getAttribute("data-bs-action")
+     
+     //var action= "/administracion/tarjetasdelete/"
+     
+     DeleteForm.setAttribute("action", action+id) 
+
+   })
+   
+
+   var UpdateModal = document.getElementById('UpdateModal')
+   UpdateModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     var button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     var id = button.getAttribute('data-bs-id')
+     var cant = button.getAttribute('data-bs-cant')
+     var tipo = button.getAttribute('data-bs-tipo')
+     var modalidad = button.getAttribute('data-bs-modalidad')
+     
+     var mensaje=cant+" tarjetas del menu: "+tipo+" modalidad: "+ modalidad
+     // If necessary, you could initiate an AJAX request here
+     // and then do the updating in a callback.
+     //
+     // Update the modal's content.
+     var modalTitle = UpdateModal.querySelector('.modal-title span')
+     modalTitle.textContent = mensaje
+
+
+     var UpdateForm = UpdateModal.querySelector('#UpdateForm')
+     var action=UpdateForm.getAttribute("data-bs-action")
+     
+     //var action= "/administracion/tarjetasdelete/"
+     
+     UpdateForm.setAttribute("action", action+id) 
+
+   })
+
+   
+   </script>  
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para Usuarios con Perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>¡¡¡¡¡¡¡¡¡    ACCESO PROHIBIDO     !!!!!!!!!</u></span>
+      </div>
+   </div>
+   <br>
+   <br>
+</div>
+
+{% endif %}
+
+
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para usuarios Autenticados con perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Ingrese con su usuario y contraseña.</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+
+
+{% endblock %}
+

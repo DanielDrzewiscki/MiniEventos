@@ -1,0 +1,171 @@
+{% extends "Aplicacion1/base.html" %}
+
+{% load static %}
+
+{% csrf_token %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+{% if request.user.is_superuser %}
+
+{% if Tabla == 'vacia' %}
+
+<div class="container-flow site-heading text-center">
+   <div class="row">
+      <div class="col-12 site-heading-TextoMedio" style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+         <div class="row my-2">   
+            <div class="col-8">
+               <span><u>Administración de Tablas</u></span>
+            </div>
+            <div class="col-4">
+               <a class="btn btn-lg " style="color:rgb(36, 21, 5); background-color: #c9be5f;" href="{% url 'admin:index' %}" role="button"><b>Admin Sitio</b></a>
+            </div>   
+         </div>
+      </div>
+   </div>
+  
+</div>
+
+<div class="container-flow">
+   <div class="row">
+      <div class="col-12">
+         <div class="container my-3 py-5" style="border-style: solid;">
+            <div class="row text-center">
+            {% for Sect in Sector %}
+            <div class="col-3">
+               <a class="btn btn-secondary col mb-4"  href="{% url Sect.linkpagina %}" role="button"><b>{{ Sect.titulo }}</b></a>
+            </div>
+            {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<br>
+{% else %}
+
+<div class="container-flow site-heading text-center">
+   <div class="row">
+      <div class="col-4 col-md-2">
+      </div>
+      <div class="col-8 col-md-10 site-heading-TextoMedio" style="border-top: solid; border-left: solid; border-color: rgb(48, 27, 11);">
+      <span><u>Administración de Tablas</u></span>
+      </div>
+   </div>
+  
+</div>
+
+
+<div class="container-flow">
+   <div class="row">
+      <div class="col-4 col-md-2">
+         <div class="container">
+            <nav class="navbar navbar-expand-sm flex-column">
+               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                 <span class="navbar-toggler-icon"></span>
+               </button>
+               <div class="collapse navbar-collapse" id="navbarText">
+                                    
+                  <ul class="nav">
+                     <span style="color: #e2da92;">
+                        <b><u>Tablas:</b></u>
+                     </span>
+                     
+                     <li class="nav-item" style="text-align: center;">
+                        <a href="{% url 'admin:index' %}" class="linksCategorias" >Admin. Sitio</a> &nbsp; &nbsp; &nbsp;
+                     </li>
+                     
+                     {% for Sect in Sector %}
+                     
+                     <li class="nav-item {% if request.path == '/ {{Sect.linkpagina}} /' %} active {% endif %}" style="text-align: center;">
+                        <a href="{% url Sect.linkpagina %}" class="linksCategorias" >{{ Sect.titulo }}</a> &nbsp; &nbsp; &nbsp;
+                     </li>
+                     
+                     {% endfor %}
+                     
+                  </ul>
+               </div>
+            </nav>
+         </div>
+      </div>
+      <div class="col-8 col-md-10" style="border-left: solid; border-color: rgb(48, 27, 11);">
+        
+         {% if Tabla == 'usuario' %}
+
+         <div class="container text-center">
+         
+         <span class="linksCategorias">El usuario: &nbsp; &nbsp;{{ Nombre }}</span> 
+         <p></p>
+         <span class="linksCategorias">Mail: &nbsp; &nbsp;{{ Correo }}</span> 
+         <p></p>
+         <span class="linksCategorias">Con Password:&nbsp; &nbsp;{{ Pass }}</span> 
+         <p></p>
+         <span class="TextoLobster" style="color: #e2da92;">A sido creado Satisfactoriamente</span>
+
+         </div>
+         {% endif %}
+
+
+      </div>
+
+
+
+
+   </div>
+</div>
+
+
+{% endif %}
+
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para Usuarios con Perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>¡¡¡¡¡¡¡¡¡    ACCESO PROHIBIDO     !!!!!!!!!</u></span>
+      </div>
+   </div>
+   <br>
+   <br>
+</div>
+
+{% endif %}
+
+
+
+{% else %}
+
+<div class="container-flow site-heading text-center" style="border: solid; border-color: rgb(48, 27, 11);">
+   <div class="row">
+      <div class="col-12  site-heading-TextoMedio">
+      <span><u>Este Sitio es solo para usuarios Autenticados con perfil de Administrador</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Ingrese con su usuario y contraseña.</u></span>
+      </div>
+   </div>
+   <br>
+   <div class="row">
+      <div class="col-12  site-heading-TextoChico">
+      <span><u>Si no recuerda su usuario o contraseña, contactese con nosotros.</u></span>
+      </div>
+   </div>
+</div>
+
+{% endif %}
+
+
+{% endblock %}
